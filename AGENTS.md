@@ -170,3 +170,5 @@ When unsure about style, refer to these files:
 - `util/log.c` — Include ordering, `qemu_` prefix, logging patterns
 - `hw/core/qdev.c` — QOM naming, guard macros, device lifecycle
 - `rust/hw/i2c/src/lib.rs` — Rust module structure, doc comments, trait design
+
+**NOTE:** Always use TodoWriteTool first to create a detailed todo list before starting implementation. Update it frequently.
