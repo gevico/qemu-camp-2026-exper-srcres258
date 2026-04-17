@@ -54,13 +54,23 @@
     };
   in {
     devShells.${system}.default = pkgs.mkShell {
+      hardeningDisable = [ "fortify" ];
       packages = [ fhsEnv ] ++ shellPkgs;
 
       CROSS_PREFIX = "riscv64-unknown-elf-";
       LIBCLANG_PATH = "${pkgs.llvmPackages.libclang.lib}/lib";
 
       shellHook = ''
-        export PATH="${riscvWrapper}/bin:${pkgs.meson}/bin:${pkgs.ninja}/bin:${pkgs.pkg-config}/bin:$PATH"
+        # 添加必要的工具到 PATH (bindgen, pkg-config, meson, ninja)
+        export PATH="${riscvWrapper}/bin:${pkgs.meson}/bin:${pkgs.ninja}/bin:${pkgs.pkg-config}/bin:${pkgs.rust-bindgen}/bin:$PATH"
+        
+        # 设置完整的 PKG_CONFIG_PATH
+        export PKG_CONFIG_PATH="${pkgs.glib.dev}/lib/pkgconfig:${pkgs.zlib.dev}/lib/pkgconfig:${pkgs.pixman}/lib/pkgconfig"
+        
+        # 设置编译 include 和 library 路径 (确保能找到 zlib.h 等头文件)
+        export CPPFLAGS="-I${pkgs.zlib.dev}/include -I${pkgs.glib.dev}/include"
+        export LDFLAGS="-L${pkgs.zlib}/lib -L${pkgs.glib}/lib"
+        
         export CROSS_PREFIX="riscv64-unknown-elf-"
         export LIBCLANG_PATH="${pkgs.llvmPackages.libclang.lib}/lib"
 
