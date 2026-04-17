@@ -38,7 +38,7 @@
       rust-bindgen
     ] ++ (with python3Packages; [
       pip setuptools wheel
-      sphinx sphinx_rtd_theme
+      sphinx sphinx-rtd-theme
     ]);
 
     # FHS environment for /usr/bin, /usr/lib, /usr/include structure
