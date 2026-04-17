@@ -24,7 +24,7 @@
     
     shellPkgs = with pkgs; [
       gcc gnumake pkg-config meson ninja
-      python3 python3Packages.pip python3Packages.setuptools python3Packages.wheel
+      python3
       glib pixman dtc zlib bzip2 lzo zstd snappy capstone
       liburing libseccomp libslirp libssh curl
       gnutls nettle libgcrypt
@@ -36,7 +36,10 @@
       rustc cargo rustfmt clippy
       clang llvmPackages.libclang
       rust-bindgen
-    ];
+    ] ++ (with python3Packages; [
+      pip setuptools wheel
+      sphinx sphinx_rtd_theme
+    ]);
 
     # FHS environment for /usr/bin, /usr/lib, /usr/include structure
     fhsEnv = pkgs.buildFHSEnv {
