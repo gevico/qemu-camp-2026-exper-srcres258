@@ -826,3 +826,15 @@ void HELPER(crush)(CPURISCVState *env, target_ulong rd,
                      cpu_ldub_data(env, rs1 + n - 1) & 0x0F);
     }
 }
+
+void HELPER(expand)(CPURISCVState *env, target_ulong rd,
+                    target_ulong rs1, target_ulong rs2)
+{
+    int n = (int)rs2;
+
+    for (int i = 0; i < n; i++) {
+        uint8_t val = cpu_ldub_data(env, rs1 + i);
+        cpu_stb_data(env, rd + 2 * i, val & 0x0F);
+        cpu_stb_data(env, rd + 2 * i + 1, (val >> 4) & 0x0F);
+    }
+}
