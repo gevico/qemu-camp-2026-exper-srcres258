@@ -889,3 +889,19 @@ target_ulong HELPER(vmax)(CPURISCVState *env,
 
     return (target_ulong)(int32_t)max;
 }
+
+void HELPER(gemm)(CPURISCVState *env, target_ulong rd,
+                  target_ulong rs1, target_ulong rs2)
+{
+    for (int i = 0; i < 4; i++) {
+        for (int j = 0; j < 4; j++) {
+            int64_t acc = 0;
+            for (int k = 0; k < 4; k++) {
+                int32_t a = (int32_t)cpu_ldl_data(env, rs1 + (i * 4 + k) * 4);
+                int32_t b = (int32_t)cpu_ldl_data(env, rs2 + (k * 4 + j) * 4);
+                acc += (int64_t)a * (int64_t)b;
+            }
+            cpu_stl_data(env, rd + (i * 4 + j) * 4, (uint32_t)(int32_t)acc);
+        }
+    }
+}
