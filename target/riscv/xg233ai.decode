@@ -1,0 +1,13 @@
+#
+# Xg233ai custom instruction decode
+#
+
+%rs2  20:5
+%rs1  15:5
+%rd    7:5
+
+&r    rd rs1 rs2  !extern
+
+@r    .......  ..... ..... ... ..... .......  &r  %rs2 %rs1 %rd
+
+dma      0000110  ..... ..... 110 ..... 1111011  @r

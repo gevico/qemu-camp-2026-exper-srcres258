@@ -781,3 +781,17 @@ done:
 }
 
 #endif /* !CONFIG_USER_ONLY */
+
+void HELPER(dma)(CPURISCVState *env, target_ulong dst,
+                 target_ulong src, target_ulong grain)
+{
+    const int sizes[] = {8, 16, 32};
+    int n = sizes[grain];
+
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
+            uint32_t val = cpu_ldl_data(env, src + (i * n + j) * 4);
+            cpu_stl_data(env, dst + (j * n + i) * 4, val);
+        }
+    }
+}
