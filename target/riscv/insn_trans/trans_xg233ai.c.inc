@@ -11,3 +11,17 @@ static bool trans_dma(DisasContext *ctx, arg_r *a)
     gen_helper_dma(tcg_env, dst, src, grain);
     return true;
 }
+
+static bool trans_sort(DisasContext *ctx, arg_r *a)
+{
+    if (!ctx->cfg_ptr->ext_xg233ai) {
+        return false;
+    }
+
+    TCGv addr = get_gpr(ctx, a->rs1, EXT_NONE);
+    TCGv total = get_gpr(ctx, a->rs2, EXT_NONE);
+    TCGv count = get_gpr(ctx, a->rd, EXT_NONE);
+
+    gen_helper_sort(tcg_env, addr, total, count);
+    return true;
+}

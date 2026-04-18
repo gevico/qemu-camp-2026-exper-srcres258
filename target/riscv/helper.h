@@ -1287,6 +1287,7 @@ DEF_HELPER_4(vsm4r_vs, void, ptr, ptr, env, i32)
 
 /* Xg233ai helpers */
 DEF_HELPER_FLAGS_4(dma, TCG_CALL_NO_WG, void, env, tl, tl, tl)
+DEF_HELPER_FLAGS_4(sort, TCG_CALL_NO_WG, void, env, tl, tl, tl)
 
 /* CFI (zicfiss) helpers */
 #ifndef CONFIG_USER_ONLY

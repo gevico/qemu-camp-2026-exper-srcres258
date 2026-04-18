@@ -795,3 +795,18 @@ void HELPER(dma)(CPURISCVState *env, target_ulong dst,
         }
     }
 }
+
+void HELPER(sort)(CPURISCVState *env, target_ulong base,
+                  target_ulong total, target_ulong count)
+{
+    for (int i = 0; i < count - 1; i++) {
+        for (int j = 0; j < count - i - 1; j++) {
+            int32_t a = (int32_t)cpu_ldl_data(env, base + j * 4);
+            int32_t b = (int32_t)cpu_ldl_data(env, base + (j + 1) * 4);
+            if (a > b) {
+                cpu_stl_data(env, base + j * 4, (uint32_t)b);
+                cpu_stl_data(env, base + (j + 1) * 4, (uint32_t)a);
+            }
+        }
+    }
+}
