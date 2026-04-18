@@ -873,3 +873,19 @@ void HELPER(vscale)(CPURISCVState *env, target_ulong rd,
                      (uint32_t)((int64_t)val * (int64_t)scale));
     }
 }
+
+target_ulong HELPER(vmax)(CPURISCVState *env,
+                          target_ulong rs1, target_ulong rs2)
+{
+    int n = (int)rs2;
+    int32_t max = (int32_t)cpu_ldl_data(env, rs1);
+
+    for (int i = 1; i < n; i++) {
+        int32_t val = (int32_t)cpu_ldl_data(env, rs1 + i * 4);
+        if (val > max) {
+            max = val;
+        }
+    }
+
+    return (target_ulong)(int32_t)max;
+}
