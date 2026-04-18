@@ -850,3 +850,14 @@ target_ulong HELPER(vdot)(CPURISCVState *env,
     }
     return (target_ulong)acc;
 }
+
+void HELPER(vrelu)(CPURISCVState *env, target_ulong rd,
+                   target_ulong rs1, target_ulong rs2)
+{
+    int n = (int)rs2;
+
+    for (int i = 0; i < n; i++) {
+        int32_t val = (int32_t)cpu_ldl_data(env, rs1 + i * 4);
+        cpu_stl_data(env, rd + i * 4, (uint32_t)(val > 0 ? val : 0));
+    }
+}
