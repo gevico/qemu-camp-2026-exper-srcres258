@@ -838,3 +838,15 @@ void HELPER(expand)(CPURISCVState *env, target_ulong rd,
         cpu_stb_data(env, rd + 2 * i + 1, (val >> 4) & 0x0F);
     }
 }
+
+target_ulong HELPER(vdot)(CPURISCVState *env,
+                          target_ulong rs1, target_ulong rs2)
+{
+    int64_t acc = 0;
+    for (int i = 0; i < 16; i++) {
+        int32_t a = (int32_t)cpu_ldl_data(env, rs1 + i * 4);
+        int32_t b = (int32_t)cpu_ldl_data(env, rs2 + i * 4);
+        acc += (int64_t)a * (int64_t)b;
+    }
+    return (target_ulong)acc;
+}

@@ -53,3 +53,18 @@ static bool trans_expand(DisasContext *ctx, arg_r *a)
     gen_helper_expand(tcg_env, rd, rs1, rs2);
     return true;
 }
+
+static bool trans_vdot(DisasContext *ctx, arg_r *a)
+{
+    if (!ctx->cfg_ptr->ext_xg233ai) {
+        return false;
+    }
+
+    TCGv rs1 = get_gpr(ctx, a->rs1, EXT_NONE);
+    TCGv rs2 = get_gpr(ctx, a->rs2, EXT_NONE);
+    TCGv rd = dest_gpr(ctx, a->rd);
+
+    gen_helper_vdot(rd, tcg_env, rs1, rs2);
+    gen_set_gpr(ctx, a->rd, rd);
+    return true;
+}
