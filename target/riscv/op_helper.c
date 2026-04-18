@@ -810,3 +810,19 @@ void HELPER(sort)(CPURISCVState *env, target_ulong base,
         }
     }
 }
+
+void HELPER(crush)(CPURISCVState *env, target_ulong rd,
+                   target_ulong rs1, target_ulong rs2)
+{
+    int n = (int)rs2;
+
+    for (int i = 0; i < n / 2; i++) {
+        uint8_t lo = cpu_ldub_data(env, rs1 + 2 * i) & 0x0F;
+        uint8_t hi = cpu_ldub_data(env, rs1 + 2 * i + 1) & 0x0F;
+        cpu_stb_data(env, rd + i, lo | (hi << 4));
+    }
+    if (n & 1) {
+        cpu_stb_data(env, rd + n / 2,
+                     cpu_ldub_data(env, rs1 + n - 1) & 0x0F);
+    }
+}
