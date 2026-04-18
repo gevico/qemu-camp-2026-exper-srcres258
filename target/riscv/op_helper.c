@@ -861,3 +861,15 @@ void HELPER(vrelu)(CPURISCVState *env, target_ulong rd,
         cpu_stl_data(env, rd + i * 4, (uint32_t)(val > 0 ? val : 0));
     }
 }
+
+void HELPER(vscale)(CPURISCVState *env, target_ulong rd,
+                    target_ulong rs1, target_ulong rs2)
+{
+    int32_t scale = (int32_t)rs2;
+
+    for (int i = 0; i < 16; i++) {
+        int32_t val = (int32_t)cpu_ldl_data(env, rs1 + i * 4);
+        cpu_stl_data(env, rd + i * 4,
+                     (uint32_t)((int64_t)val * (int64_t)scale));
+    }
+}
