@@ -1295,6 +1295,7 @@ DEF_HELPER_FLAGS_4(vrelu, TCG_CALL_NO_WG, void, env, tl, tl, tl)
 DEF_HELPER_FLAGS_4(vscale, TCG_CALL_NO_WG, void, env, tl, tl, tl)
 DEF_HELPER_FLAGS_3(vmax, TCG_CALL_NO_WG, tl, env, tl, tl)
 DEF_HELPER_FLAGS_4(gemm, TCG_CALL_NO_WG, void, env, tl, tl, tl)
+DEF_HELPER_FLAGS_4(vadd, TCG_CALL_NO_WG, void, env, tl, tl, tl)
 
 /* CFI (zicfiss) helpers */
 #ifndef CONFIG_USER_ONLY
